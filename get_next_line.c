@@ -6,81 +6,61 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 18:02:15 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/26 23:10:02 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/27 22:27:05 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-error : read = -1
-malloc = null
-*/
-
 #include "get_next_line.h"
+//#define BUFFER_SIZE 10
 
-static size_t	count_until_eol_or_eob(char *buffer, size_t *pos, size_t max)
+static int	len(char *b, size_t rp, ssize_t limit, short *flag)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while (buffer[i + *pos] != '\n' && *pos != BUFFER_SIZE)
-	{
-		(*pos)++;
+	i = rp % BUFFER_SIZE;
+	*flag = 0;
+	while (i < limit && b[i] != '\n')
 		i++;
+	if (i < limit && b[i] == '\n')
+	{
+		i++;
+		if (i == limit && limit < BUFFER_SIZE)
+			*flag = -2;
+		else
+			*flag = -1;
 	}
-	if (*pos == BUFFER_SIZE)
-		*pos = 0;
-	return (i);
+	else if (i == limit && limit < BUFFER_SIZE)
+		*flag = -2;
+	return (i - (rp % BUFFER_SIZE));
 }
 
-static char	*copy_to_line(char *line, char *buffer, size_t *start, size_t end)
+static char	*getl(char *line, char *b, size_t ltr, size_t *readpos)
 {
-	char	*newLine;
+	char	*new_line;
 	size_t	len_line;
 	size_t	i;
-	
-	i = 0;
+
 	len_line = 0;
 	while (line && line[len_line] != 0)
 		len_line++;
-	len_line = len_line + (end - *start + 2);
-	newLine = malloc(len_line + 1);
+	len_line = len_line + ltr;
+	new_line = malloc(len_line + 1);
+	if (new_line == NULL)
+	{
+		free(line);
+		return (NULL);
+	}
+	i = 0;
 	while (line && line[i] != 0)
-		newLine[i++] = line[i];
+	{
+		new_line[i] = line[i];
+		i++;
+	}
+	free(line);
 	while (i < len_line)
-		newLine[i++] = buffer[(*start)++];
-	if (*start == BUFFER_SIZE)
-		*start = 0;
-	free(line);
-	return (newLine);
-}
-
-//copy to line until the end of buffer or encounter \n
-static char	*copy_to_line(char *line, char *buffer, size_t *pos, size_t max)
-{
-	char	*newLine;
-	size_t	len_line;
-	size_t	len_buffer;
-	size_t	i;
-
-	
-	len_line = 0;
-	while (line && line[len_line] != 0)
-		len_line++;
-	len_buffer = count_until_eol_or_eob(buffer, pos);
-	newLine = malloc(len_line + len_buffer + 1);
-	i = 0;
-	while (line && line[i] != 0)
-	{
-		newLine[i] = line[i];
-		i++;
-	}
-	while (i < len_line + len_buffer)
-	{
-		newLine[i] = buffer[i - len_line];
-		i++;
-	}
-	free(line);
-	return (newLine);
+		new_line[i++] = b[((*readpos)++ % BUFFER_SIZE)];
+	new_line[len_line] = 0;
+	return (new_line);
 }
 
 char	*get_next_line(int fd)
@@ -88,24 +68,29 @@ char	*get_next_line(int fd)
 	char			*line;
 	static char		buffer[BUFFER_SIZE];
 	static size_t	readpos = 0;
-	size_t			count;
+	static ssize_t	limit = 0;
+	short			flag;
 
 	line = NULL;
-	if (readpos != 0)
-		
+	if (fd < 0 || BUFFER_SIZE < 0)
+		return (NULL);
 	while (1)
 	{
-		count = read(fd, buffer, BUFFER_SIZE);
-		if (count == 0)
-			break;
-		if (count < BUFFER_SIZE)
-			break;
-		line = copy_to_line(line, buffer, &readpos);
+		if (limit == -1)
+			break ;
+		if (limit == 0)
+			return (line);
+		line = getl(line, buffer, len(buffer, readpos, limit, &flag), &readpos);
+		if (flag == -2)
+			readpos = 0;
+		if (flag == -1 || flag == -2)
+			return (line);
 	}
-	return (line);
+	free(line);
+	return (NULL);
 }
 
-
+/*
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -115,9 +100,9 @@ int main()
 	int fileDis = open("../bin/test", O_RDONLY);
 	char *p;
 
-	p = get_next_line(fileDis);
-	printf("%s", p);
+	while ((p = get_next_line(fileDis)))
+		printf("%s", p);
 	close(fileDis);
 	return (0);
 }
-
+*/
