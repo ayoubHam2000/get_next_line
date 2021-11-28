@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 16:30:09 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 17:15:23 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/28 17:28:17 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static short	is_ended(char **line, char *buffer, size_t *pos)
 	*pos = *pos % BUFFER_SIZE;
 	return (0);
 }
-#include <stdio.h>
+
 char	*get_next_line(int fd)
 {
 	char			*line;
@@ -43,8 +43,6 @@ char	*get_next_line(int fd)
 	static size_t	pos[OPEN_MAX] = {0};
 	ssize_t			limit;
 
-    int i;
-    scanf("%d", &i);
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
 	line = NULL;
@@ -65,22 +63,4 @@ char	*get_next_line(int fd)
 		if (is_ended(&line, buffer[fd], &(pos[fd])))
 			return (line);
 	}
-}
-
-
-#include <fcntl.h>
-
-int main()
-{
-    int fd1 = open("../bin/test1", 0);    
-    int fd2 = open("../bin/test2", 0);
-
-    char *p1;
-    char *p2;
-    do{
-        if ((p1 = get_next_line(fd1)))
-            printf("%s\n", p1);
-        if ((p2 = get_next_line(fd2)))
-            printf("%s\n", p2);
-    }while(p1 && p2);
 }
