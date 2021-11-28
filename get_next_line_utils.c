@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 18:02:13 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 20:10:07 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/28 22:40:42 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*mline(char *line, char *str)
 	new_line = malloc(len_line + 1);
 	if (!new_line)
 	{
-		free(line);	
+		free(line);
 		return (NULL);
 	}
 	while (line && *line)

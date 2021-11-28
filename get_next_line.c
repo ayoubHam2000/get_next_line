@@ -6,46 +6,38 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 18:02:15 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 22:38:46 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/28 22:40:28 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *freeline(char *line)
+static char	*freeline(char *line)
 {
 	free(line);
 	return (NULL);
 }
 
-static char	*strbreakl(char *buffer)
+static int	shift_if_break(char *buffer)
 {
-	while (*buffer != '\n' && *buffer != 0)
-		buffer++;
-	if (*buffer == '\n')
-		return (buffer);
-	return (NULL);
-}
-
-static void	shift(char *buffer)
-{
-	int i;
-	int j;
+	int	i;
+	int	j;
+	int	f;
 
 	i = 0;
 	j = 0;
-	while (buffer[i] != '\n' && i < BUFFER_SIZE)
+	f = 0;
+	while (i < BUFFER_SIZE && buffer[i] != '\n' && buffer[i] != 0)
 		i++;
+	if (buffer[i] == '\n')
+		f = 1;
 	if (i == BUFFER_SIZE)
-		buffer[0] = 0;
+		return (f);
 	i++;
 	while (i < BUFFER_SIZE && buffer[i])
-	{
-		buffer[j] = buffer[i];
-		j++;
-		i++;
-	}
+		buffer[j++] = buffer[i];
 	buffer[j] = 0;
+	return (f);
 }
 
 char	*get_next_line(int fd)
@@ -70,27 +62,8 @@ char	*get_next_line(int fd)
 		line = mline(line, buffer);
 		if (!line)
 			return (NULL);
-		if (strbreakl(buffer))
-		{
-			shift(buffer);
+		if (shift_if_break(buffer))
 			return (line);
-		}
 		buffer[0] = 0;
 	}
 }
-/*
-#include <stdio.h>
-#include <fcntl.h>
-
-int main()
-{
-	int fd;
-	char *p;
-
-	fd = open("../bin/test1", O_RDONLY);
-	while ((p = get_next_line(fd)))
-	{
-		printf("%s", p);	
-	}
-	return (0);
-}*/
