@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 18:02:15 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 21:50:23 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/28 22:38:46 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ static char *freeline(char *line)
 	return (NULL);
 }
 
-static char	*strbreakl(char *line)
+static char	*strbreakl(char *buffer)
 {
-	while (*line != '\n' && *line != 0)
-		line++;
-	if (*line == '\n')
-		return line;
+	while (*buffer != '\n' && *buffer != 0)
+		buffer++;
+	if (*buffer == '\n')
+		return (buffer);
 	return (NULL);
 }
 
@@ -70,7 +70,7 @@ char	*get_next_line(int fd)
 		line = mline(line, buffer);
 		if (!line)
 			return (NULL);
-		if (strbreakl(line))
+		if (strbreakl(buffer))
 		{
 			shift(buffer);
 			return (line);
@@ -78,7 +78,7 @@ char	*get_next_line(int fd)
 		buffer[0] = 0;
 	}
 }
-
+/*
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -93,4 +93,4 @@ int main()
 		printf("%s", p);	
 	}
 	return (0);
-}
+}*/
