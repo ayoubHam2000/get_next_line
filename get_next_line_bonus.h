@@ -6,13 +6,13 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 22:48:54 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 22:50:52 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:14:32 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
-//# define BUFFER_SIZE 43
+//# define BUFFER_SIZE 41
 
 # include <unistd.h>
 # include <stdlib.h>

@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 18:02:15 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 22:40:28 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/11/29 12:21:00 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ static int	shift_if_break(char *buffer)
 		f = 1;
 	if (i == BUFFER_SIZE)
 		return (f);
-	i++;
+	if (buffer[i] != 0)
+		i++;
 	while (i < BUFFER_SIZE && buffer[i])
-		buffer[j++] = buffer[i];
+		buffer[j++] = buffer[i++];
 	buffer[j] = 0;
 	return (f);
 }
@@ -47,7 +48,7 @@ char	*get_next_line(int fd)
 	ssize_t			nbread;
 
 	line = NULL;
-	while (1)
+	while (fd >= 0)
 	{
 		if (!buffer[0])
 		{
@@ -66,4 +67,5 @@ char	*get_next_line(int fd)
 			return (line);
 		buffer[0] = 0;
 	}
+	return (NULL);
 }
