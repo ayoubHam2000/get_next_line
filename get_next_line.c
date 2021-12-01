@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 18:02:15 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/29 12:21:00 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/12/01 11:14:26 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static int	shift_if_break(char *buffer)
 	f = 0;
 	while (i < BUFFER_SIZE && buffer[i] != '\n' && buffer[i] != 0)
 		i++;
-	if (buffer[i] == '\n')
-		f = 1;
 	if (i == BUFFER_SIZE)
 		return (f);
+	if (buffer[i] == '\n')
+		f = 1;
 	if (buffer[i] != 0)
 		i++;
 	while (i < BUFFER_SIZE && buffer[i])

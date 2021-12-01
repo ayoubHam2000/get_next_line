@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 22:43:10 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/28 22:50:02 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/12/01 13:46:29 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static size_t	lentcpy(char *buffer)
 	i = 0;
 	while (buffer[i] != '\n' && buffer[i] != 0 && i < BUFFER_SIZE)
 		i++;
-	if (buffer[i] == '\n')
+	if (i < BUFFER_SIZE && buffer[i] == '\n')
 		i++;
 	return (i);
 }

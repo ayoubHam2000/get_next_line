@@ -6,7 +6,7 @@
 /*   By: aben-ham <aben-ham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 22:43:08 by aben-ham          #+#    #+#             */
-/*   Updated: 2021/11/29 12:28:56 by aben-ham         ###   ########.fr       */
+/*   Updated: 2021/12/01 13:49:25 by aben-ham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static int	shift_if_break(char *buffer)
 	f = 0;
 	while (i < BUFFER_SIZE && buffer[i] != '\n' && buffer[i] != 0)
 		i++;
-	if (buffer[i] == '\n')
-		f = 1;
 	if (i == BUFFER_SIZE)
 		return (f);
+	if (buffer[i] == '\n')
+		f = 1;
 	if (buffer[i])
 		i++;
 	while (i < BUFFER_SIZE && buffer[i])
@@ -69,3 +69,24 @@ char	*get_next_line(int fd)
 	}
 	return (NULL);
 }
+/*
+#include <stdio.h>
+#include <fcntl.h>
+
+int main()
+{
+	int fd[2];
+	char *p1;
+	char *p2;
+
+	fd[0] = open("bin/test1", 0);
+	fd[1] = open("bin/test2", 0);
+	do
+	{
+		if ((p1 = get_next_line( fd[0] )))
+			printf("%s", p1);
+		if ((p2 = get_next_line(fd[1])))
+			printf("%s", p2);
+	}while (p1 || p2);
+	return (0);
+}*/
